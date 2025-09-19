@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💐</text></svg>">
+    <title>Hortensia Love</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(45deg, #e6f7ff, #ffffff, #e6f7ff);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #particles-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(100, 180, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(15px);
+            bottom: -200px;
+            animation: move-particles linear infinite;
+        }
+
+        @keyframes move-particles {
+            from { transform: translateY(0); }
+            to { transform: translateY(-120vh); }
+        }
+
+        .scene-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding-top: 10vh;
+            padding-bottom: 5vh;
+        }
+
+        .text {
+            position: relative;
+            color: #4a6fa5;
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-family: 'Great Vibes', cursive;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(130, 180, 230, 0.8);
+            animation: fadeInText 3s ease-in 2.5s forwards;
+            opacity: 0;
+            z-index: 20;
+            text-align: center;
+        }
+        
+        #flower-petals-fall-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .falling-flower-petal {
+            position: absolute;
+            background: #7eb3e6;
+            width: 20px; 
+            height: 20px;
+            border-radius: 50% 50% 50% 0;
+            opacity: 0.7;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .falling-flower-petal.fall-left { animation: petalFallLeft 12s linear forwards; }
+        .falling-flower-petal.fall-right { animation: petalFallRight 12s linear forwards; }
+
+        .hydrangea {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            z-index: 10;
+            animation: grow 3s cubic-bezier(0.4, 0, 0.2, 1) forwards, 
+                        swayTheWholeFlower 8s ease-in-out infinite 3.2s;
+            transform-origin: bottom;
+            clip-path: inset(100% 0 0 0);
+        }
+        
+        .flower-cluster {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 180px;
+            z-index: 10;
+        }
+        
+        .small-flower {
+            position: absolute;
+            width: 25px; 
+            height: 25px;
+            border-radius: 50% 50% 50% 0;
+            background: linear-gradient(135deg, #7b68ee, #9966cc);
+            animation: bloom-flower 2s ease-out forwards, glowing 2.5s ease-in-out infinite 2s;
+            opacity: 0;
+        }
+        
+        .small-flower::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #f1f8ff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        
+        .stem-bundle {
+            position: absolute; 
+            width: 100%; 
+            height: 100%;
+            bottom: 0; 
+            left: 0;
+            z-index: 4;
+        }
+        
+        .stem {
+            position: absolute; 
+            bottom: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 12px; 
+            height: calc(100% - 100px); 
+            background: linear-gradient(to top, #054c05, #228b22); 
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .leaves > div {
+            position: absolute;
+            background: #054c05;
+            border-radius: 50% 0 50% 50%;
+            transform-origin: bottom;
+            box-shadow: inset 3px 3px #066406;
+        }
+        
+        .leaves > div:nth-child(1) { 
+            width: 60px; 
+            height: 50px; 
+            transform: rotate(-30deg); 
+            top: 220px; 
+            left: calc(50% - 50px); 
+        }
+        
+        .leaves > div:nth-child(2) { 
+            width: 70px; 
+            height: 55px; 
+            transform: rotate(30deg); 
+            top: 200px; 
+            left: calc(50% + 5px); 
+            border-radius: 0 50% 50% 50%;
+        }
+        
+        /* --- Keyframes --- */
+        @keyframes grow { 
+            0% { clip-path: inset(100% 0 0 0); opacity: 0; transform: translateY(50px); } 
+            70% { opacity: 1; } 
+            100% { clip-path: inset(0 0 0 0); opacity: 1; transform: translateY(0); } 
+        }
+        
+        @keyframes fadeInText { 
+            to { opacity: 1; } 
+        }
+        
+        @keyframes bloom-flower {
+            0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
+            100% { transform: scale(1) rotate(var(--rotation)); opacity: 1; }
+        }
+        
+        @keyframes glowing {
+            50% { background: #b19cd9; box-shadow: 0 0 30px rgba(177, 156, 217, 0.8); }
+        }
+        
+        @keyframes gentleSway { 
+            0%, 100% { transform: rotate(0deg); } 
+            50% { transform: rotate(2deg); } 
+        }
+        
+        @keyframes swayTheWholeFlower {
+            0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(0) rotate(4deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(0) rotate(-4deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes petalFallLeft { 
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; } 
+            50%  { transform: translateY(50vh) rotate(180deg) translateX(-10vw); } 
+            100% { transform: translateY(110vh) rotate(360deg) translateX(-15vw); opacity: 0; } 
+        }
+        
+        @keyframes petalFallRight { 
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; } 
+            50%  { transform: translateY(50vh) rotate(-180deg) translateX(10vw); } 
+            100% { transform: translateY(110vh) rotate(-360deg) translateX(15vw); opacity: 0; } 
+        }
+        
+        /* Colores alternativos para hortensias */
+        .hydrangea.pink .small-flower { background: linear-gradient(135deg, #e6a8d7, #d47eaf); }
+        .hydrangea.purple .small-flower { background: linear-gradient(135deg, #b19cd9, #8d72b2); }
+        .hydrangea.pink .small-flower::before, .hydrangea.purple .small-flower::before { background: #f1f8ff; }
+        
+        .color-controls {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 25;
+        }
+        
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        
+        .color-btn.blue { background: #7b68ee; }
+        .color-btn.pink { background: #e6a8d7; }
+        .color-btn.purple { background: #b19cd9; }
+        
+        @media (max-width: 600px) {
+            .scene-container {
+                padding-bottom: 20vh;
+            }
+            .hydrangea { 
+                width: 250px; 
+                height: 350px; 
+            }
+            .flower-cluster {
+                width: 150px;
+                height: 150px;
+            }
+            .small-flower {
+                width: 18px;
+                height: 18px;
+            }
+            .stem { 
+                height: calc(100% - 90px); 
+            }
+            .leaves > div:nth-child(1) { 
+                top: 180px; 
+                left: calc(50% - 40px); 
+            }
+            .leaves > div:nth-child(2) { 
+                top: 160px; 
+                left: calc(50% + 5px); 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-container"></div>
+    <div id="flower-petals-fall-container"></div>
+    
+    <div class="scene-container">
+        <div class="text">I Love You ♥️</div>
+        <div class="hydrangea">
+            <div class="flower-cluster" id="flower-cluster">
+                </div>
+            <div class="stem-bundle">
+                <div class="stem"></div>
+                <div class="leaves">
+                    <div></div> 
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="color-controls">
+        <div class="color-btn blue" onclick="changeColor('blue')"></div>
+        <div class="color-btn pink" onclick="changeColor('pink')"></div>
+        <div class="color-btn purple" onclick="changeColor('purple')"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const particlesContainer = document.getElementById('particles-container');
+            const flowerCluster = document.getElementById('flower-cluster');
+            
+            // Crear partículas de fondo
+            const isMobile = window.innerWidth <= 600;
+            const particleCount = isMobile ? 20 : 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = isMobile ? Math.random() * 60 + 20 : Math.random() * 150 + 50; 
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = Math.random() * 100 + 'vw';
+                
+                const duration = Math.random() * 8 + 5;
+                const delay = Math.random() * -10;
+                
+                particle.style.animation = `move-particles ${duration}s linear ${delay}s infinite`;
+                particlesContainer.appendChild(particle);
+            }
+
+            // Crear las pequeñas flores de la hortensia
+            const flowerCount = 80; 
+            const radius = 80;
+            
+            for (let i = 0; i < flowerCount; i++) {
+                const angle = (i / flowerCount) * Math.PI * 2;
+                const distance = Math.random() * radius;
+                
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                const flower = document.createElement('div');
+                flower.classList.add('small-flower');
+                
+                flower.style.left = `calc(50% + ${x}px)`;
+                flower.style.top = `calc(50% + ${y}px)`;
+                
+                const rotation = Math.random() * 360;
+                flower.style.setProperty('--rotation', `${rotation}deg`);
+                
+                flower.style.animationDelay = `${Math.random() * 2}s`;
+                
+                flowerCluster.appendChild(flower);
+            }
+
+            // Crear pétalos cayendo
+            const petalFallContainer = document.getElementById('flower-petals-fall-container');
+            const flowerElement = document.querySelector('.hydrangea');
+            let petalFallDirection = 0;
+
+            function createFallingPetal() {
+                if (!flowerElement) return;
+                const petal = document.createElement('div');
+                petal.classList.add('falling-flower-petal');
+                
+                if (petalFallDirection % 2 === 0) { 
+                    petal.classList.add('fall-left'); 
+                } else { 
+                    petal.classList.add('fall-right'); 
+                }
+                
+                petalFallDirection++;
+                
+                const rect = flowerElement.getBoundingClientRect();
+                const startX = rect.left + rect.width / 2;
+                const startY = rect.top + 80;
+                
+                petal.style.left = `${startX}px`;
+                petal.style.top = `${startY}px`;
+                
+                const colors = ['#7eb3e6', '#e6a8d7', '#b19cd9'];
+                petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                petalFallContainer.appendChild(petal);
+                
+                petal.addEventListener('animationend', () => {
+                    petal.remove();
+                });
+            }
+            
+            setTimeout(() => {
+                setInterval(createFallingPetal, 1500);
+            }, 4000);
+        });
+        
+        function changeColor(color) {
+            const hydrangea = document.querySelector('.hydrangea');
+            hydrangea.className = 'hydrangea ' + color;
+        }
+    </script>
+</body>
+</html>
